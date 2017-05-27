@@ -6,6 +6,7 @@ import com.example.stefan.snake2d.enums.GameState;
 import com.example.stefan.snake2d.enums.TileType;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -13,14 +14,14 @@ import java.util.List;
  */
 
 public class GameEngine {
-    public static final int levelWidth = 28;
-    public static final int levelHeight = 42;
+    public static final int levelWidth = 29;
+    public static final int levelHeight = 43;
 
     private List<Point> wallPoints = new ArrayList<>();
     private List<Point> snake = new ArrayList<>();
     private Point fruit;
 
-    private Directions currentDirection = Directions.RIGHT;
+    private Directions currentDirection = Directions.STATIC;
     private GameState currentState = GameState.IN_PROGRESS;
 
     private boolean increaseTail = false; // If fruit has been eaten, snake should grow!
@@ -118,12 +119,16 @@ public class GameEngine {
             case RIGHT:
                 updateSnake(1, 0);
                 break;
+            case STATIC:
+                break;
         }
 
         // Check for wall collision
         for (Point p : wallPoints){
-            if(snake.get(0).equals(p))
+            if(snake.get(0).equals(p)) {
                 currentState = GameState.FINISHED;
+                break;
+            }
         }
 
         // Check for snake parts collision
@@ -160,10 +165,24 @@ public class GameEngine {
 
     public GameState getCurrentState(){return this.currentState;}
 
+    public void setCurrentState(GameState newState){currentState = newState;}
+
     public void updateDirection(Directions newDirection){
+        if(currentDirection == Directions.STATIC)
+            currentDirection = newDirection;
         if(Math.abs(newDirection.ordinal() - currentDirection.ordinal()) % 2 == 1)
             currentDirection = newDirection;
     }
 
+
+
     private Point getHead(){return snake.get(0);}
+
+    public void removeSnake(){
+        Iterator<Point> it = snake.iterator();
+
+        while(it.hasNext())
+            it.remove();
+
+    }
 }

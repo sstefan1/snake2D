@@ -1,5 +1,6 @@
 package com.example.stefan.snake2d.activities;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,13 +42,13 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 engine.update();
 
                 if(engine.getCurrentState() == GameState.IN_PROGRESS)
-                    handler.postDelayed(this, 125);
+                    handler.postDelayed(this, 100);
                 else if(engine.getCurrentState() == GameState.FINISHED)
                     youLostToast();
                 snakeView.setLevel(engine.getLevel());
                 snakeView.invalidate();
             }
-        }, 125);
+        }, 100);
     }
 
     private void youLostToast(){
@@ -56,6 +57,15 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+
+        if(event.getAction()==MotionEvent.ACTION_DOWN){
+            if(engine.getCurrentState() == GameState.FINISHED){
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
+                return true;
+            }
+        }
+
         switch(event.getAction()){
             case MotionEvent.ACTION_DOWN:
                 prevX = event.getX();

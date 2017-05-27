@@ -5,7 +5,6 @@ package com.example.stefan.snake2d.enums;
  */
 
 public enum GameState {
-    READY,
     IN_PROGRESS,
     FINISHED
 }

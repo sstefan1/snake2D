@@ -33,13 +33,12 @@ public class SnakeView extends View{
         if(level != null){
             float tileWidth = canvas.getWidth() / GameEngine.levelWidth;
             float tileHeight = canvas.getHeight() / GameEngine.levelHeight;
-            float radius = Math.min(tileHeight, tileWidth) / 2;
 
             for(int i = 0; i<GameEngine.levelWidth; i++){
                 for(int j = 0; j<GameEngine.levelHeight; j++){
                     switch(level[i][j]){
                         case EMPTY:
-                            paint.setColor(Color.LTGRAY);
+                            paint.setColor(Color.BLACK);
                             break;
                         case WALL:
                             paint.setColor(Color.BLUE);
@@ -48,16 +47,16 @@ public class SnakeView extends View{
                             paint.setColor(Color.GREEN);
                             break;
                         case SNAKE_TAIL:
-                            paint.setColor(Color.BLACK);
+                            paint.setColor(Color.GREEN);
                             break;
                         case FRUIT:
                             paint.setColor(Color.RED);
                             break;
                     }
-                    float cx = i * tileWidth + radius;
-                    float cy = j * tileHeight + radius;
+                    float cx = i * tileWidth;// + radius;
+                    float cy = j * tileHeight; // + radius;
 
-                    canvas.drawCircle(cx, cy, radius, paint);
+                    canvas.drawRect(cx, cy, cx+tileWidth, cy+tileHeight, paint);
                 }
             }
         }
