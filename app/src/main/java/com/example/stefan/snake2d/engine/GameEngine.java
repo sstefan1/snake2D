@@ -1,6 +1,10 @@
 package com.example.stefan.snake2d.engine;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import com.example.stefan.snake2d.Coordinate.Point;
+import com.example.stefan.snake2d.activities.MainActivity;
 import com.example.stefan.snake2d.enums.Directions;
 import com.example.stefan.snake2d.enums.GameState;
 import com.example.stefan.snake2d.enums.TileType;
@@ -26,10 +30,15 @@ public class GameEngine {
 
     private boolean increaseTail = false; // If fruit has been eaten, snake should grow!
 
+    public SharedPreferences sharedPreferences;
+    private boolean transparentWalls;
+    private boolean increaseSpeed;
+
 
     public GameEngine(){}
 
     public void init() {
+        getPreferences();
         addWallPoints();
         addSnake();
         addFruit();
@@ -126,21 +135,36 @@ public class GameEngine {
         // Check for wall collision
         for (Point p : wallPoints){
             if(snake.get(0).equals(p)) {
-                currentState = GameState.FINISHED;
-                break;
+                if (!transparentWalls)
+                    currentState = GameState.FINISHED;
+                else {
+                    if (snake.get(0).getX() == levelWidth - 1) {
+                        snake.get(0).setX(1);
+                    } else if (snake.get(0).getX() == 0) {
+                        snake.get(0).setX(levelWidth - 2);
+                    } else if (snake.get(0).getY() == levelHeight - 1) {
+                        snake.get(0).setY(1);
+                    } else if (snake.get(0).getY() == 0) {
+                        snake.get(0).setY(levelHeight - 2);
+                    }
+                    break;
+                }
             }
         }
 
         // Check for snake parts collision
         for(int i = 1; i < snake.size(); i++)
-            if(snake.get(i).equals(getHead()))
+            if(snake.get(i).equals(getHead())) {
                 currentState = GameState.FINISHED;
-
+                MainActivity.delay=150;
+            }
 
         if(getHead().equals(fruit)){
             //fruit = null;
             addFruit();
             increaseTail = true;
+            if(increaseSpeed)
+                MainActivity.delay-=3;
         }
     }
 
@@ -178,11 +202,8 @@ public class GameEngine {
 
     private Point getHead(){return snake.get(0);}
 
-    public void removeSnake(){
-        Iterator<Point> it = snake.iterator();
-
-        while(it.hasNext())
-            it.remove();
-
+    public void getPreferences(){
+        transparentWalls = sharedPreferences.getBoolean("wall", false);
+        increaseSpeed = sharedPreferences.getBoolean("speed", false);
     }
 }

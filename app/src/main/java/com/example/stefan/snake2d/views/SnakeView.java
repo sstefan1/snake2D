@@ -18,6 +18,7 @@ import com.example.stefan.snake2d.enums.TileType;
 public class SnakeView extends View{
 
     private Paint paint = new Paint();
+    private Paint paint1 = new Paint();
     private TileType level[][];
 
     public SnakeView(Context context, @Nullable AttributeSet attrs) {
@@ -39,24 +40,30 @@ public class SnakeView extends View{
                     switch(level[i][j]){
                         case EMPTY:
                             paint.setColor(Color.BLACK);
+                            paint1.setColor(Color.GREEN);
                             break;
                         case WALL:
-                            paint.setColor(Color.BLUE);
+                            paint.setColor(Color.BLACK);
+                            paint1.setColor(Color.BLUE);
                             break;
                         case SNAKE_HEAD:
-                            paint.setColor(Color.GREEN);
+                            paint.setColor(Color.BLUE);
+                            paint1.setColor(Color.BLUE);
                             break;
                         case SNAKE_TAIL:
                             paint.setColor(Color.GREEN);
+                            paint1.setColor(Color.GREEN);
                             break;
                         case FRUIT:
                             paint.setColor(Color.RED);
+                            paint1.setColor(Color.RED);
                             break;
                     }
                     float cx = i * tileWidth;// + radius;
                     float cy = j * tileHeight; // + radius;
 
-                    canvas.drawRect(cx, cy, cx+tileWidth, cy+tileHeight, paint);
+                    canvas.drawRect(cx, cy, cx+tileWidth, cy+tileHeight, paint1);
+                    canvas.drawRect(cx + 1, cy + 1, cx+tileWidth - 1, cy+tileHeight - 1, paint);
                 }
             }
         }

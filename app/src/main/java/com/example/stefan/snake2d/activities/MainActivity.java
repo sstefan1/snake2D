@@ -2,8 +2,11 @@ package com.example.stefan.snake2d.activities;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -14,19 +17,26 @@ import com.example.stefan.snake2d.enums.Directions;
 import com.example.stefan.snake2d.enums.GameState;
 import com.example.stefan.snake2d.views.SnakeView;
 
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener{
 
     private GameEngine engine;
     private SnakeView snakeView;
     private final Handler handler = new Handler();
     private float prevX, prevY;
+    public static int delay = 150;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         engine = new GameEngine();
+        engine.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         engine.init();
 
         snakeView = (SnakeView)findViewById(R.id.snakeView);
@@ -42,13 +52,13 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 engine.update();
 
                 if(engine.getCurrentState() == GameState.IN_PROGRESS)
-                    handler.postDelayed(this, 100);
+                    handler.postDelayed(this, delay);
                 else if(engine.getCurrentState() == GameState.FINISHED)
                     youLostToast();
                 snakeView.setLevel(engine.getLevel());
                 snakeView.invalidate();
             }
-        }, 100);
+        }, delay);
     }
 
     private void youLostToast(){
@@ -93,4 +103,18 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
         return true;
     }
+
+    public void openPreferenceSettings(){
+        Intent settings = new Intent(MainActivity.this,SettingsActivity.class);
+        startActivity(settings);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        openPreferenceSettings();
+        return super.onOptionsItemSelected(item);
+    }
 }
+
+
+
