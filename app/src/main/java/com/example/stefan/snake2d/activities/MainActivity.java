@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -104,6 +105,12 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         return true;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     public void openPreferenceSettings(){
         Intent settings = new Intent(MainActivity.this,SettingsActivity.class);
         startActivity(settings);
@@ -111,7 +118,11 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        openPreferenceSettings();
+        switch(item.getItemId()){
+            case R.id.action_settings:
+                openPreferenceSettings();
+        }
+
         return super.onOptionsItemSelected(item);
     }
 }

@@ -43,7 +43,10 @@ public class SnakeView extends View{
                             paint1.setColor(Color.GREEN);
                             break;
                         case WALL:
-                            paint.setColor(Color.BLACK);
+                            if(!GameEngine.transparentWalls)
+                                paint.setColor(Color.BLUE);
+                            else
+                                paint.setColor(Color.BLACK);
                             paint1.setColor(Color.BLUE);
                             break;
                         case SNAKE_HEAD:

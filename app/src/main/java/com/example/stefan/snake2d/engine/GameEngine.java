@@ -31,8 +31,8 @@ public class GameEngine {
     private boolean increaseTail = false; // If fruit has been eaten, snake should grow!
 
     public SharedPreferences sharedPreferences;
-    private boolean transparentWalls;
-    private boolean increaseSpeed;
+    public static boolean transparentWalls;
+    public static boolean increaseSpeed;
 
 
     public GameEngine(){}
@@ -164,7 +164,7 @@ public class GameEngine {
             addFruit();
             increaseTail = true;
             if(increaseSpeed)
-                MainActivity.delay-=3;
+                MainActivity.delay-=5;
         }
     }
 
